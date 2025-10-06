@@ -8,9 +8,12 @@ spec:
   template:
     metadata: { labels: { app: spring-backend } }
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
         - name: backend
           image: selab-backend:0.0.0    # ← 占位，overlay 會換成實際 tag
+          imagePullPolicy: Always
           ports: [{ containerPort: 8080 }]
           envFrom:
             - configMapRef: { name: app-config }

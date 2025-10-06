@@ -4,6 +4,13 @@
     - kubectl -n argocd get secret argocd-initial-admin-secret   -o jsonpath="{.data.password}" | base64 -d (取得初始帳號 admin 密碼 6drZd5rt6g6PKT9d)
 - 部署正式流程
 
+- 新增一個 GHCR 登入 Secret（拉映像用）
+- kubectl -n app-prod create secret docker-registry ghcr-secret \
+  --docker-server=ghcr.io \
+  --docker-username='你的 GitHub 帳號' \
+  --docker-password='具 read:packages 權限的 Personal Access Token' \
+  --docker-email='you@example.com'
+
 (1) 程式碼層
 - 後端（Spring Boot）
   - 統一環境變數（不要寫死在 yml）

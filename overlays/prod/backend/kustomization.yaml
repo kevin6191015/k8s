@@ -8,8 +8,8 @@ resources:
 
 images:
   - name: selab-backend            # ← 必須對應 base/backend.yaml 內的占位 image 名稱
-    newName: kevin0413/selab-backend
-    newTag: "1.0.0"
+    newName: ghcr.io/kevin6191015/new_app-backend   # ← 你的 GHCR 映像路徑
+    newTag: "latest"                                # ← 手動 Sync 時拉最新版
 
 replicas:
   - name: spring-backend

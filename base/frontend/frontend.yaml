@@ -8,9 +8,12 @@ spec:
   template:
     metadata: { labels: { app: web-frontend } }
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
         - name: web
           image: selab-frontend:0.0.0 
+          imagePullPolicy: Always
           ports: [{ containerPort: 80 }]
           readinessProbe:
             httpGet: { path: /, port: 80 }
