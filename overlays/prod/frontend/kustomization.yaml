@@ -8,5 +8,5 @@ resources:
 
 images:
   - name: selab-frontend          # ← 必須對應 base/frontend.yaml 內的占位 image 名稱
-    newName: kevin0413/selab-frontend
-    newTag: "1.0.0"
+    newName: ghcr.io/kevin6191015/new_app-frontend   # ← 你的 GHCR 映像路徑
+    newTag: "latest"          
