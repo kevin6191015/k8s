@@ -10,3 +10,7 @@ images:
   - name: selab-backend            # ← 必須對應 base/backend.yaml 內的占位 image 名稱
     newName: kevin0413/selab-backend
     newTag: "1.0.0"
+
+replicas:
+  - name: spring-backend
+    count: 3
