@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: app-prod
+spec:
+  serviceName: mysql
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0           # ← Oracle 官方映像，建議 8.0/8.4 LTS，避免 Flyway 相容性警告
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: mysql
+              containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "rootpass"
+            - name: MYSQL_USER
+              value: "kevin"
+            - name: MYSQL_PASSWORD
+              value: "secret"
+            - name: MYSQL_DATABASE
+              value: "project"
+          args:
+            # 依需求調整預設設定（可保留預設）
+            - --default_authentication_plugin=caching_sha2_password
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_0900_ai_ci
+          readinessProbe:
+            exec:
+              command: ["bash","-lc","mysqladmin ping -h 127.0.0.1 -prootpass"]
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket: { port: 3306 }
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/mysql   # ← 改成官方映像路徑
+      volumes:
+        - name: data
+          emptyDir: {}  # 仍為暫存，先驗證流程；要持久化再改 PVC
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: app-prod
+spec:
+  type: ClusterIP
+  selector:
+    app: mysql
+  ports:
+    - name: mysql
+      port: 3306
+      targetPort: 3306

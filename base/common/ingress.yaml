@@ -1,0 +1,27 @@
+# ingress-anyhost.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-anyhost
+  namespace: app-prod
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+spec:
+  ingressClassName: nginx    # 很重要：讓 ingress-nginx 接管
+  rules:
+    - http:                  # ← 不寫 host，任何 Host 都會匹配
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: spring-backend
+                port:
+                  number: 8080
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web-frontend
+                port:
+                  number: 80

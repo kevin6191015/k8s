@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: app-prod
+data:
+  SPRING_PROFILES_ACTIVE: "prod"
+  DB_HOST: "mysql"                  # 若用雲端 RDS：改為 RDS endpoint
+  DB_PORT: "3306"
+  DB_NAME: "project"
+  APP_JWT_EXP_MINUTES: "120"
+  SERVER_SERVLET_CONTEXT_PATH: "/api"
+  TZ: "Asia/Taipei"
+  VITE_API_BASE_URL: "/api"

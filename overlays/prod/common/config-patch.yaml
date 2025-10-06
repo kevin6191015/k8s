@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: app-prod
+data:
+  # 若 DB 在叢外，改 host.docker.internal 或固定 DNS/IP
+  # DB_HOST: "host.docker.internal"
+  VITE_API_BASE_URL: "/api"

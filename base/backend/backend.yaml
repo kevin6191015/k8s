@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-backend
+spec:
+  replicas: 2
+  selector: { matchLabels: { app: spring-backend } }
+  template:
+    metadata: { labels: { app: spring-backend } }
+    spec:
+      containers:
+        - name: backend
+          image: selab-backend:0.0.0    # ← 占位，overlay 會換成實際 tag
+          ports: [{ containerPort: 8080 }]
+          envFrom:
+            - configMapRef: { name: app-config }
+            - secretRef:    { name: app-secrets }
+          readinessProbe:
+            httpGet: { path: /api/actuator/health, port: 8080 }
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /api/actuator/health, port: 8080 }
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests: { cpu: "250m", memory: "512Mi" }
+            limits:   { cpu: "1",    memory: "1Gi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-backend
+spec:
+  selector: { app: spring-backend }
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
