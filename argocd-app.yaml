@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: my-app-dev
+  name: my-app
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/kevin6191015/k8s.git
     targetRevision: main
-    path: overlays/dev           # 指向 dev 的 kustomize 目錄
+    path: overlays/prod         # 指向 dev 的 kustomize 目錄
   destination:
     server: https://kubernetes.default.svc
     namespace: app-dev
