@@ -13,4 +13,5 @@ images:
 
 replicas:
   - name: spring-backend
-    count: 3
+
+    count: 1
